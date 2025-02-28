@@ -13,13 +13,14 @@ public class ProcesadorPedido implements Callable<String> {
     @Override
     public String call() {
         String resultado = pedido.procesar();
-        if (resultado.contains("procesado exitosamente")) {
+        if (resultado.contains("procesado en")) { // Cambio aquí
             synchronized (lock) {
                 contadorExitosos++;
             }
         }
         return resultado;
     }
+
 
     public static int getContadorExitosos() {
         synchronized (lock) {

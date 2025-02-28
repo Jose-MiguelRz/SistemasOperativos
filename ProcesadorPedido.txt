@@ -1,0 +1,29 @@
+package Threads;
+import java.util.concurrent.Callable;
+
+public class ProcesadorPedido implements Callable<String> {
+    private final Pedido pedido;
+    private static int contadorExitosos = 0;
+    private static final Object lock = new Object();
+
+    public ProcesadorPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    @Override
+    public String call() {
+        String resultado = pedido.procesar();
+        if (resultado.contains("procesado exitosamente")) {
+            synchronized (lock) {
+                contadorExitosos++;
+            }
+        }
+        return resultado;
+    }
+
+    public static int getContadorExitosos() {
+        synchronized (lock) {
+            return contadorExitosos;
+        }
+    }
+}
